@@ -1,7 +1,8 @@
-Para ejecutar el programa necesitas un .env con las siguientes variables
-PORT=3000
-MONGO_URI=mongodb://localhost:27017/web_project
-JWT_SECRET=supersecretkey
+# Importante
+Para ejecutar el programa necesitas un .env con las siguientes variables:
+- ** PORT=3000
+- ** MONGO_URI=mongodb://localhost:27017/web_project
+- ** JWT_SECRET=supersecretkey
 
 
 # Sistema de Merchandising
