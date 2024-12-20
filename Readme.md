@@ -32,3 +32,5 @@ El **Sistema de Merchandising** es una plataforma moderna y eficiente para gesti
 
 # Diagrama UML para el Proyecto de Merchandising
 
+![TPB1JiCm38RlUOfez_KHqAI90mSa1De3XCHq0JUPucI0fhqxopeHrrrxgx_V_ktetr0sAPS1rS7OBzE3Nhr1Ea9QQNLI-l9PD4IQhiNka_JfhCwggRSnVFY-99Dz3A89ml6EFAU828bMccjDoVi6Qnk3jXPjTLYK0C808JCkd9-zSmZV9i7SkB5PLtI0OjKTpTot_mkI88_ZNhS1zLjhxzXFC0EqNtRgqwYQxlCQIuOxJpVM5vzDOlvaZN](https://github.com/user-attachments/assets/15e5b912-e244-44a7-8554-66b8ac201bc2)
+
