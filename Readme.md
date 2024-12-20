@@ -29,3 +29,76 @@ El **Sistema de Merchandising** es una plataforma moderna y eficiente para gesti
 ## Proximas Versiones
 - **Gestión de Colecciones**: Organiza los productos en colecciones para una mejor administración.
 - **Gestión de Productos por Categorías**: Los productos pueden organizarse y filtrarse por categorías como **Electrónica**, **Ropa**, **Juguetes**, etc., mejorando la usabilidad y organización.
+
+# Diagrama UML para el Proyecto de Merchandising
+
+A continuación se muestra el código PlantUML para generar el diagrama:
+
+```plantuml
+@startuml
+package "Server" 
+{
+    class server.js {}
+}
+
+package "Configuration" 
+{
+    class env {}
+}
+
+package "Controllers" {
+    class authController {}
+
+    class collectionController {}
+
+    class elementController {}
+}
+
+package "Middleware" {
+    class authMiddleware {}
+}
+
+package "Models" {
+    class User {}
+
+    class Collections {}
+
+    class Element {
+        - id
+        - name
+        - collectionId
+    }
+}
+
+package "Routes" {
+    class authRoutes {}
+
+    class collectionRoutes {}
+
+    class elementRoutes {}
+}
+
+package "Public" {
+    class elements.html {}
+
+    class index.html
+    class login.html
+    class script.js
+    class style.css
+}
+
+server.js --> authRoutes
+server.js --> collectionRoutes
+server.js --> elementRoutes
+
+authRoutes --> authController
+collectionRoutes --> collectionController
+elementRoutes --> elementController
+
+authController --> User
+collectionController --> Collections
+collectionController --> User
+
+elementController --> Element
+collectionController --> authMiddleware
+@enduml
