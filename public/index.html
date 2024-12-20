@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sistema de Merchandising</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+  <style>
+    body 
+    {
+      font-family: Arial, sans-serif;
+      background-color: #f4f7fa;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container 
+    {
+      width: 100%;
+      max-width: 500px;
+      margin: 0 auto;
+      padding: 30px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    h1, h2, h3 {
+      color: #333;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .main-title {
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 8px;
+      color: #444;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 16px;
+      background-color: #f9f9f9;
+      transition: all 0.3s ease;
+    }
+
+    /* Efecto de enfoque en los campos de entrada */
+    input:focus, select:focus {
+      border-color: #007bff;
+      background-color: #fff;
+      outline: none;
+    }
+
+    button {
+      padding: 12px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    /* Estilo para los botones de Editar y Eliminar */
+    button.edit, button.delete {
+      width: auto;
+      padding: 8px 12px;  /* Hacer los botones más pequeños */
+      margin-right: 10px; /* Espaciado horizontal entre los botones */
+      margin-bottom: 10px; /* Espaciado vertical entre los botones */
+      font-size: 14px; /* Reducir el tamaño de la fuente */
+    }
+
+    /* Botón de Eliminar con color rojo */
+    button.delete {
+      background-color: #f44336;
+    }
+
+    button.delete:hover {
+      background-color: #d32f2f;
+    }
+
+    .terms {
+      font-size: 14px;
+      color: #777;
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .terms a {
+      color: #4CAF50;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .terms a:hover {
+      text-decoration: underline;
+    }
+
+    /* Espaciado general */
+    .container form {
+      margin-bottom: 30px;
+    }
+
+    /* Alineación de los botones Editar y Eliminar a la derecha */
+    .actions {
+      display: flex;
+      justify-content: flex-end;  /* Alinea los botones a la derecha */
+      gap: 10px;  /* Espaciado entre los botones */
+    }
+
+    /* Mejorar el espaciado entre los productos y los botones */
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    /* Estilo de los productos en la lista */
+    ul li {
+      display: flex;
+      justify-content: space-between;  /* Alinea el contenido entre el nombre/descripción y los botones */
+      align-items: center;  /* Centra los elementos verticalmente */
+      padding: 10px 0;
+      border-bottom: 1px solid #e0e0e0;
+      margin-bottom: 20px;
+    }
+
+    /* Separar el nombre y la descripción */
+    ul li .product-info {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;  /* Espaciado entre el nombre y la descripción */
+    }
+
+    ul li span {
+      color: #666;  /* Da un color más tenue a la descripción */
+    }
+  </style>
+</head>
+<body>
+  <div class="container" x-data="app()">
+    <!-- Título del Sistema -->
+    <div class="main-title">Sistema de Merchandising</div>
+
+    <!-- Sección de Registro y Login -->
+    <div x-show="!loggedIn">
+      <!-- Registro -->
+      <div x-show="showRegister">
+        <h1>Registrarse</h1>
+        <form @submit.prevent="register">
+          <label for="registerUsername">Nombre de usuario</label>
+          <input type="text" id="registerUsername" x-model="registerData.username" required>
+          <label for="registerPassword">Contraseña</label>
+          <input type="password" id="registerPassword" x-model="registerData.password" required>
+          <button type="submit">Registrarse</button>
+        </form>
+        <button @click="showRegister = false; showLogin = true">¿Ya tienes una cuenta? Iniciar sesión</button>
+        <div class="terms">
+          <p>Al registrarte, aceptas nuestros <a href="#">Términos de Servicio</a> y nuestra <a href="#">Política de Privacidad</a>.</p>
+        </div>
+      </div>
+
+      <!-- Login -->
+      <div x-show="showLogin">
+        <h1>Iniciar sesión</h1>
+        <form @submit.prevent="login">
+          <label for="loginUsername">Nombre de usuario</label>
+          <input type="text" id="loginUsername" x-model="loginData.username" required>
+          <label for="loginPassword">Contraseña</label>
+          <input type="password" id="loginPassword" x-model="loginData.password" required>
+          <button type="submit">Iniciar sesión</button>
+        </form>
+        <button @click="showLogin = false; showRegister = true">¿No tienes cuenta? Regístrate</button>
+        <div class="terms">
+          <p>Al iniciar sesión, aceptas nuestros <a href="#">Términos de Servicio</a> y nuestra <a href="#">Política de Privacidad</a>.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Página de Elementos (se muestra si el usuario está logueado) -->
+    <div x-show="loggedIn">
+      <h1>Bienvenido, <span x-text="user.username"></span></h1>
+      <button @click="logout">Cerrar sesión</button>
+
+      <h2>Productos</h2>
+
+      <!-- Filtro por categoría -->
+      <div>
+        <label for="categoryFilter">Filtrar por categoría</label>
+        <select id="categoryFilter" x-model="filterCategory" @change="filterByCategory(filterCategory)">
+          <option value="">Todas</option>
+          <option value="Electronics">Sin Especificar</option>
+          <option value="Electronics">Electrónica</option>
+          <option value="Clothing">Ropa</option>
+          <option value="Clothing">Juguetes</option>
+          <option value="Clothing">Miscelanea</option>
+          <option value="Clothing">Audiovisual</option>
+
+        </select>
+      </div>
+
+      <!-- Formulario de creación de productos -->
+      <form @submit.prevent="createElement">
+        <label for="elementName">Nombre</label>
+        <input type="text" id="elementName" x-model="elementData.name" required>
+        <label for="elementDescription">Descripción</label>
+        <input type="text" id="elementDescription" x-model="elementData.description" required>
+        <label for="elementCategory">Categoría</label>
+        <select id="elementCategory" x-model="elementData.category" required>
+          <option value="">Seleccionar categoría</option>
+          <option value="Electronics">Sin Especificar</option>
+          <option value="Electronics">Electrónica</option>
+          <option value="Clothing">Ropa</option>
+          <option value="Clothing">Juguetes</option>
+          <option value="Clothing">Miscelanea</option>
+          <option value="Clothing">Audiovisual</option>
+
+        </select>
+        <button type="submit">Añadir Producto</button>
+      </form>
+
+      <!-- Listado de productos -->
+      <ul>
+        <template x-for="element in elements" :key="element._id">
+          <li>
+            <div class="product-info">
+              <strong x-text="element.name"></strong>
+              <span x-text="element.description"></span>
+              <span x-text="element.category"></span>
+            </div>
+            <!-- Contenedor de los botones Editar y Eliminar -->
+            <div class="actions">
+              <button @click="editElement(element)" class="edit">Editar</button>
+              <button @click="deleteElement(element._id)" class="delete">Eliminar</button>
+            </div>
+          </li>
+        </template>
+      </ul>
+
+      <!-- Formulario de edición de productos -->
+      <div x-show="editingElement">
+        <h3>Editar Producto</h3>
+        <form @submit.prevent="updateElement">
+          <label for="editElementName">Nombre</label>
+          <input type="text" id="editElementName" x-model="elementData.name" required>
+          <label for="editElementDescription">Descripción</label>
+          <input type="text" id="editElementDescription" x-model="elementData.description" required>
+          <label for="editElementCategory">Categoría</label>
+          <select id="editElementCategory" x-model="elementData.category" required>
+            <option value="Electronics">Sin Especificar</option>
+            <option value="Electronics">Electrónica</option>
+            <option value="Clothing">Ropa</option>
+            <option value="Clothing">Juguetes</option>
+            <option value="Clothing">Miscelanea</option>
+            <option value="Clothing">Audiovisual</option>
+          </select>
+          <button type="submit">Actualizar Producto</button>
+          <button @click.prevent="cancelEdit()">Cancelar</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

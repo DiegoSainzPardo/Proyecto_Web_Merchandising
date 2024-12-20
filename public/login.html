@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Alpine.js Frontend</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+</head>
+<body>
+  <div class="container" x-data="app()">
+    <h1>Login</h1>
+    <form @submit.prevent="login">
+      <label for="loginUsername">Username</label>
+      <input type="text" id="loginUsername" x-model="loginData.username" required>
+      <label for="loginPassword">Password</label>
+      <input type="password" id="loginPassword" x-model="loginData.password" required>
+      <button type="submit">Login</button>
+    </form>
+
+    <!-- Botón para ir al registro si no tienes cuenta -->
+    <button @click="window.location.href = '/index.html'">Don't have an account? Register</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

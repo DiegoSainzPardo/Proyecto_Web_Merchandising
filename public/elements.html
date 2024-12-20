@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Elements - Alpine.js Frontend</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+</head>
+<body>
+  <div class="container" x-data="app()" x-init="fetchElements()">
+    <!-- Página de Elementos -->
+    <div x-show="loggedIn">
+      <h1>Welcome, <span x-text="user.username"></span></h1>
+      <button @click="logout" class="logout-button">Logout</button>
+
+      <h2>Elements</h2>
+
+      <!-- Formulario para crear o editar un elemento -->
+      <form @submit.prevent="editingElement ? updateElement() : createElement">
+        <div class="form-group">
+          <label for="elementName">Name</label>
+          <input type="text" id="elementName" x-model="elementData.name" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="elementDescription">Description</label>
+          <input type="text" id="elementDescription" x-model="elementData.description" required>
+        </div>
+        
+        <div class="form-actions">
+          <button type="submit" x-text="editingElement ? 'Update Element' : 'Add Element'"></button>
+          <button type="button" @click="cancelEdit" x-show="editingElement" class="cancel-edit-button">Cancel Edit</button>
+        </div>
+      </form>
+
+      <ul class="elements-list">
+        <template x-for="element in elements" :key="element._id">
+          <li>
+            <strong x-text="element.name"></strong>: <span x-text="element.description"></span>
+            
+            <!-- Contenedor de los botones de Editar y Eliminar -->
+            <div class="actions">
+              <!-- Botón de Eliminar -->
+              <button @click="deleteElement(element._id)" class="delete">Delete</button>
+              <!-- Botón de Editar -->
+              <button @click="editElement(element)" class="edit">Edit</button>
+            </div>
+          </li>
+        </template>
+      </ul>
+    </div>
+
+    <!-- Si no está logueado, redirigir al login -->
+    <div x-show="!loggedIn" class="login-prompt">
+      <h1>Please Log in</h1>
+      <button @click="window.location.href = '/login.html'" class="login-button">Go to Login</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
